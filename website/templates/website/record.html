@@ -1,0 +1,43 @@
+{% extends "website/base.html" %}
+
+{% block title %}
+{{book.title}}'s Record
+{% endblock title %}
+
+{% block content %}
+
+
+<h1>{{book.title}}'s Record</h1>
+<div class="card">
+    <div class="card-header">
+        {{ book.title}} 
+    </div>
+    <div class="card-body">
+
+      <p class="card-text">    
+       <strong>title:</strong> {{ book.title }}<br><br>
+       <strong>Author:</strong> {{ book.author }}<br><br>
+       <strong>Year:</strong> {{ book.year_of_publish }}<br><br>
+       <strong>Brrowed:</strong> {{ book.is_borrowed }}<br><br>
+       <strong>Created At:</strong> {{ book.created_at }}<br><br>
+       <strong>ID:</strong> {{book.id}}<br><br>
+    </p>
+    </div>
+  </div>
+<br>
+
+<a href="{% url 'website:home' %}" class="btn btn-secondary">Back</a>
+<a href="{% url 'website:delete_record' book.id %}" class="btn btn-danger">Delete</a>
+<a href="{% url 'website:update_record' book.id %}" class="btn btn-primary">Update</a>
+
+
+    
+
+
+{% endblock content %}
+
+
+
+
+
+

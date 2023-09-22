@@ -1,0 +1,76 @@
+{% extends 'website/base.html' %}
+
+{% block title %}
+  {{title}}
+{% endblock title %}
+
+
+{% block content %}
+
+
+
+{% if user.is_authenticated %}
+
+
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Year of publish</th>
+      <th scope="col">Brrowed</th>
+      <th scope="col">Created At</th>
+      <th scope="col">ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+{% if books %}
+	{% for book in books %}
+		<tr>
+			<td>{{ book.title }} </td>
+			<td>{{ book.author }}</td>
+			<td>{{ book.year_of_publish }}</td>
+			<td>{{ book.is_borrowed }}</td>
+			<td>{{ book.created_at }}</td>
+
+            <td><a href="{% url 'website:book_detail' book.id %}"> {{book.id}}</a></td>
+		</tr>
+	{% endfor %}
+
+{% endif %}
+
+	
+	  </tbody>
+	</table>
+
+
+
+
+
+{% else %}
+
+<div class="col-md-6 offset-md-3">
+<h1>Login</h1>
+<br/>
+
+<form method="POST" action="{% url 'website:home' %}">
+	{% csrf_token %}
+
+  <div class="mb-3">
+    <input type="text" class="form-control" name="username", placeholder="Username" required>
+    
+  </div><br/>
+  <div class="mb-3">
+    <input type="password" class="form-control" name="password", placeholder="Password" required>
+  </div>
+  <br/>
+  <button type="submit" class="btn btn-secondary">Login</button>
+
+</form>
+
+
+
+{% endif %}
+
+{% endblock %}
