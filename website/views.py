@@ -257,3 +257,83 @@ def std_detail(request, pk):
         # messages.success(request, "You Must Be logged In to View these Records")
         # return redirect('website:home')
 
+
+from django.shortcuts import render
+from .models import Book, Student
+from django.db.models import Q
+
+def search(request):
+    query = request.GET.get('query', '')
+    
+    # Search books and students
+    books = Book.objects.filter(
+        Q(title__icontains=query) | 
+        Q(author__icontains=query) | 
+        Q(id__icontains=query)
+    )
+    
+    students = Student.objects.filter(
+        Q(username__icontains=query) | 
+        Q(email__icontains=query) | 
+        Q(id__icontains=query) | 
+        Q(first_name__icontains=query) | 
+        Q(last_name__icontains=query)
+    )
+    
+    results = []
+    
+    # Combine results into a single list with type information
+    for book in books:
+        results.append({
+            'type': 'Book',
+            'name_title': book.title,
+            'author_id': book.author,
+            'year_email': book.year_of_publish,
+            'borrowed_username': book.is_borrowed,
+            'created_at_address': book.created_at,
+            'id': book.id
+        })
+    
+    for student in students:
+        results.append({
+            'type': 'Student',
+            'name_title': f"{student.first_name} {student.last_name}",
+            'author_id': student.username,
+            'year_email': student.email,
+            'borrowed_username': ', '.join(book.title for book in student.book_set.all()),
+            'created_at_address': student.address,
+            'id': student.id
+        })
+    
+    return render(request, 'website/search_results.html', {'results': results})
+
+
+
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Book, Student
+
+def detail(request, type, id):
+    search_param = request.GET.get('search', None)
+
+    if search_param:
+        if type == 'Book':
+            book_obj = get_object_or_404(Book, pk=id)
+            return redirect('website:book_detail', pk=book_obj.id)  # Redirect to book detail
+        elif type == 'Student':
+            student_obj = get_object_or_404(Student, pk=id)
+            return redirect('website:std_detail', pk=student_obj.id)  # Redirect to student detail
+        else:
+            # Handle invalid type here (e.g., redirect to an error page)
+            pass
+    else:
+        if type == 'Book':
+            obj = get_object_or_404(Book, pk=id)
+        elif type == 'Student':
+            obj = get_object_or_404(Student, pk=id)
+        else:
+            # Handle invalid type here (e.g., redirect to an error page)
+            pass
+
+    return render(request, 'website/detail.html', {'obj': obj})

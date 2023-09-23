@@ -22,4 +22,6 @@ urlpatterns = [
 
     path('student_login/', custom_login, name='student_login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('search/', search, name='search'),
+    path('detail/<str:type>/<int:id>/', detail, name='detail'),
 ]

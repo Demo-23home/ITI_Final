@@ -1,0 +1,25 @@
+{% extends 'website/base.html' %}
+
+{% block title %}
+  {{ obj.title|default:obj.username }} Detail
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ obj.title|default:obj.username }} Detail</h1>
+    <ul>
+        <li>ID: {{ obj.id }}</li>
+        <li>Title/Name: {% if type == 'book' %}{{ obj.title }}{% else %}{{ obj.username }}{% endif %}</li>
+        {% if type == 'book' %}
+            <li>Author: {{ obj.author }}</li>
+            <li>Year of Publish: {{ obj.year_of_publish }}</li>
+            <!-- Add more book-specific details here -->
+        {% elif type == 'student' %}
+            <li>Email: {{ obj.email }}</li>
+            <li>Phone: {{ obj.phone_number }}</li>
+            <!-- Add more student-specific details here -->
+        {% endif %}
+        <!-- Add more common details here -->
+    </ul>
+</div>
+{% endblock %}
