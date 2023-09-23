@@ -1,25 +1,40 @@
-{% extends 'website/base.html' %}
+{% extends "website/base.html" %}
 
 {% block title %}
-  {{ obj.title|default:obj.username }} Detail
+{{student.first_name}}'s Record
 {% endblock title %}
 
 {% block content %}
-<div class="container">
-    <h1>{{ obj.title|default:obj.username }} Detail</h1>
-    <ul>
-        <li>ID: {{ obj.id }}</li>
-        <li>Title/Name: {% if type == 'book' %}{{ obj.title }}{% else %}{{ obj.username }}{% endif %}</li>
-        {% if type == 'book' %}
-            <li>Author: {{ obj.author }}</li>
-            <li>Year of Publish: {{ obj.year_of_publish }}</li>
-            <!-- Add more book-specific details here -->
-        {% elif type == 'student' %}
-            <li>Email: {{ obj.email }}</li>
-            <li>Phone: {{ obj.phone_number }}</li>
-            <!-- Add more student-specific details here -->
-        {% endif %}
-        <!-- Add more common details here -->
-    </ul>
-</div>
-{% endblock %}
+
+
+<h1>{{student.first_name}}'s Record</h1>
+<div class="card">
+    <div class="card-header">
+        {{ student.first_name }} {{ student.last_name }}
+    </div>
+    <div class="card-body">
+
+      <p class="card-text">    
+       <strong>Email:</strong> {{ student.email }}<br><br>
+       <strong>Phone Number:</strong> {{ student.phone_number }}<br><br>
+       <strong>Address:</strong> {{ student.address }}<br><br>
+       <strong>City:</strong> {{ student.city }}<br><br>
+       <strong>State:</strong> {{ student.state }}<br><br>
+       <strong>Zip Code:</strong> {{ student.zip_code }}<br><br>
+       <strong>Created At:</strong> {{ student.created_at }}<br><br>
+       <strong>ID:</strong> {{student.id}}<br><br>
+    </p>
+    </div>
+  </div>
+<br>
+
+
+<a href="{% url 'website:home' %}" class="btn btn-secondary">Back</a>
+
+
+    
+
+
+{% endblock content %}
+
+

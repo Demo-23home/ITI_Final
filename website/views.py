@@ -331,9 +331,9 @@ def detail(request, type, id):
         if type == 'Book':
             obj = get_object_or_404(Book, pk=id)
         elif type == 'Student':
-            obj = get_object_or_404(Student, pk=id)
+            student = get_object_or_404(Student, pk=id)
         else:
             # Handle invalid type here (e.g., redirect to an error page)
             pass
 
-    return render(request, 'website/detail.html', {'obj': obj})
+    return render(request, 'website/detail.html', {'student': student})
