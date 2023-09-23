@@ -8,7 +8,7 @@ from .models import Book
 
 def home(request):
     books = Book.objects.all()
-
+    students= Student.objects.all()
 
 
 
@@ -25,7 +25,7 @@ def home(request):
             messages.success(request, "Incorrect username or password")
             return redirect('website:home')
     else:
-        return render(request, 'website/home.html', {'title':'Home Page', 'books':books})
+        return render(request, 'website/home.html', {'title':'Home Page', 'books':books,'students':students})
 
 
 
@@ -125,3 +125,113 @@ def update_record(request, pk):
     else:
         messages.success(request, "You Must Be logged In to Delte this Record")
         return redirect('website:home') 
+    
+
+
+# from .models import Student
+# from django.http import HttpResponseRedirect
+# def my_login(request):
+#     if request.method == 'POST':
+#         usernm=request.POST['username']
+#         passwd=request.POST['password']
+#         obj = Student.objects.filter(username=usernm, password=passwd)[0]
+#         if obj is not None:
+#             return redirect('website:stu_dash')
+#         else:
+#             messages.success(request,'invalid')
+#     else:
+#         return render(request,'website/stu_login.html')        
+
+
+
+
+
+
+
+# Your views.py
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, redirect
+
+def student_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('stu_dash')  # Redirect to the dashboard or any other desired page
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'website/login.html', {'form': form})
+
+
+
+
+
+
+
+def stu_dash(request,pk):
+    student = Student.objects.get(id=pk)
+    return render(request,'website/stu_dash.html',{'student':student})
+
+
+
+from django.shortcuts import render, redirect
+from .models import Student
+from .forms import StudentRegistrationForm  # You'll need to create this form
+
+from django.urls import reverse
+
+def register_student(request):
+    if request.method == 'POST':
+        form = StudentRegistrationForm(request.POST)
+        if form.is_valid():
+            new_student = form.save()
+
+            # Get the pk of the newly registered student
+            new_student_pk = new_student.pk  # Assuming pk is the primary key of your Student model
+
+            # Construct the URL for the student's dashboard
+            dashboard_url = reverse('website:std_dash', args=[new_student_pk])
+
+            # Optionally, you can log the user in here
+            return redirect(dashboard_url)  # Redirect to the student's dashboard after successful registration
+    else:
+        form = StudentRegistrationForm()
+
+    return render(request, 'website/register.html', {'form': form})
+
+
+
+
+
+
+
+
+
+# views.py
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from .forms import CustomLoginForm  # Import your custom login form
+
+from django.urls import reverse
+
+def custom_login(request):
+    if request.method == 'POST':
+        usernm = request.POST['username']
+        passwd = request.POST['password']
+        obj = Student.objects.get(username=usernm, password=passwd)
+        if obj is not None:
+            # Get the student's pk and construct the URL for their dashboard
+            pk = obj.pk  # Assuming pk is the primary key of your Student model
+            dashboard_url = reverse('website:std_dash', args=[pk])
+            return redirect(dashboard_url)
+        else:
+            messages.error(request, 'Invalid username or password')
+            return redirect('website:std_login')
+
+    return render(request, 'website/stu_login.html')

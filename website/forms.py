@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 # from django.contrib.auth.models import User
 from django import forms
 from .models import Book
-from .models import CustomeUser
+from .models import CustomeUser,Student
 
 
 from django import forms
@@ -64,3 +64,39 @@ class AddRecord(forms.ModelForm):
         model = Book
         exclude = ("user",)  # Exclude any fields you don't want to include in the form
 
+
+
+
+
+
+from django import forms
+from .models import Student
+
+class StudentRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'phone_number',
+            'email',
+            'address',
+            'city',
+            'state',
+            'zip_code',
+            'password',
+        ]
+        widgets = {
+            'password': forms.PasswordInput(),  # To hide the password input
+        }
+
+
+
+
+# forms.py
+from django import forms
+
+class CustomLoginForm(forms.Form):
+    username = forms.CharField(label='Username', max_length=100)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
