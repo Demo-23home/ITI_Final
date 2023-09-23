@@ -242,3 +242,18 @@ def custom_login(request):
             return redirect('website:std_login')
 
     return render(request, 'website/stu_login.html')
+
+
+
+
+def std_detail(request, pk):
+    student = Student.objects.get(id = pk)
+    borrowed_books = Book.objects.filter(borrower=student)
+
+    for book in borrowed_books:
+        book.return_date = book.created_at + timedelta(days=10)
+    return render(request,'website/std_detail.html',{'student':student,'borrowed_books':borrowed_books})
+
+        # messages.success(request, "You Must Be logged In to View these Records")
+        # return redirect('website:home')
+

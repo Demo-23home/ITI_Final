@@ -80,7 +80,7 @@
           {% endfor %}
       </td>
   
-              <td><a href="#"> {{student.id}}</a></td>
+              <td><a href="{% url "website:std_detail" student.id %}"> {{student.id}}</a></td>
       </tr>
     {% endfor %}
   

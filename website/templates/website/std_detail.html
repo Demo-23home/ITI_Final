@@ -1,0 +1,84 @@
+{% extends "website/base.html" %}
+
+{% block title %}
+{{student.first_name}}'s Record
+{% endblock title %}
+
+{% block content %}
+
+
+<h1>{{student.first_name}}'s Record</h1>
+<div class="card">
+    <div class="card-header">
+        {{ student.first_name }} {{ student.last_name }}
+    </div>
+    <div class="card-body">
+
+      <p class="card-text">    
+       <strong>Email:</strong> {{ student.email }}<br><br>
+       <strong>Phone Number:</strong> {{ student.phone_number }}<br><br>
+       <strong>Address:</strong> {{ student.address }}<br><br>
+       <strong>City:</strong> {{ student.city }}<br><br>
+       <strong>State:</strong> {{ student.state }}<br><br>
+       <strong>Zip Code:</strong> {{ student.zip_code }}<br><br>
+       <strong>Created At:</strong> {{ student.created_at }}<br><br>
+       <strong>ID:</strong> {{student.id}}<br><br>
+    </p>
+    </div>
+  </div>
+<br>
+
+
+
+
+
+
+
+<br>
+<h1>Borrowed Books</h1>
+
+<!-- Display Borrowed Books -->
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Year of Publish</th>
+      <th scope="col">Borrowed</th>
+      <th scope="col">Return Date</th> 
+      <th scope="col">ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in borrowed_books %}
+    <tr>
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.year_of_publish }}</td>
+      <td>{{ book.is_borrowed }}</td>
+      <td>{{ book.return_date|date:"F d, Y" }}</td>
+      <td><a href="{% url 'website:book_detail' book.id %}">{{ book.id }}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br>
+
+
+
+
+
+
+
+
+
+<a href="{% url 'website:home' %}" class="btn btn-secondary">Back</a>
+
+
+    
+
+
+{% endblock content %}
+
+
