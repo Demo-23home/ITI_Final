@@ -170,13 +170,20 @@ def student_login(request):
 
 
 
-
+from datetime import timedelta
+from django.utils import timezone  # Import timezone
 
 
 
 def stu_dash(request,pk):
     student = Student.objects.get(id=pk)
-    return render(request,'website/stu_dash.html',{'student':student})
+    books=Book.objects.all()
+    borrowed_books = Book.objects.filter(borrower=student)
+
+    for book in borrowed_books:
+        book.return_date = book.created_at + timedelta(days=10)
+
+    return render(request,'website/stu_dash.html',{'student':student,'books':books,'borrowed_books':borrowed_books})
 
 
 

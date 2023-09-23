@@ -5,4 +5,75 @@
 
 {% block content %}
  <h1>HI {{student}}</h1> 
+ <br>
+ <h1>All Books</h1>	
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Year of publish</th>
+      <th scope="col">Brrowed</th>
+      <th scope="col">Created At</th>
+      <th scope="col">ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+{% if books %}
+	{% for book in books %}
+		<tr>
+			<td>{{ book.title }} </td>
+			<td>{{ book.author }}</td>
+			<td>{{ book.year_of_publish }}</td>
+			<td>{{ book.is_borrowed }}</td>
+			<td>{{ book.created_at|date:"F d, Y" }}</td>
+
+            <td><a href="{% url 'website:book_detail' book.id %}"> {{book.id}}</a></td>
+		</tr>
+	{% endfor %}
+
+{% endif %}
+
+
+
+</tbody>
+</table>
+
+
+<br>
+<h1>Borrowed Books</h1>
+
+<!-- Display Borrowed Books -->
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Year of Publish</th>
+      <th scope="col">Borrowed</th>
+      <th scope="col">Return Date</th> 
+      <th scope="col">ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in borrowed_books %}
+    <tr>
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.year_of_publish }}</td>
+      <td>{{ book.is_borrowed }}</td>
+      <td>{{ book.return_date|date:"F d, Y" }}</td>
+      <td><a href="{% url 'website:book_detail' book.id %}">{{ book.id }}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+
+
+
+
 {% endblock content %}

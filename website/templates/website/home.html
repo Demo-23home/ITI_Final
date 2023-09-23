@@ -32,7 +32,7 @@
 			<td>{{ book.author }}</td>
 			<td>{{ book.year_of_publish }}</td>
 			<td>{{ book.is_borrowed }}</td>
-			<td>{{ book.created_at }}</td>
+			<td>{{ book.created_at|date:"F d, Y" }}</td>
 
             <td><a href="{% url 'website:book_detail' book.id %}"> {{book.id}}</a></td>
 		</tr>
